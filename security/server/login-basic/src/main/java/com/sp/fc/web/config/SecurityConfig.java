@@ -58,10 +58,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             })
             .formLogin(login ->
                 login.loginPage("/login")
+                    .loginProcessingUrl("/loginprocess")
                     .permitAll() // 사용자 지정 로그인 페이지의 경우 permitAll() 처리를 안할 경우 무한 루프에 빠질 위험이 있으므로 반드시 추가해야 함
                     .defaultSuccessUrl("/", false) // 로그인 성공 시 root 페이지로 보내고, alwaysUse는 false 처리하는 것이 좋다.
-                    .failureUrl("/login-error") // 로그인 실패 시 Redirect 시킬 페이지 경로
                     .authenticationDetailsSource(customAuthDetails)
+                    .failureUrl("/login-error") // 로그인 실패 시 Redirect 시킬 페이지 경로
             ) // 기본적으로 formLogin()을 사용하고 경로를 지정 안할 경우, User 로그인 페이지가 DefaultLoginPageGeneratingFilter, DefaultLogoutnPageGeneratingFilter에 의해 노출된다.
             .logout(logout -> logout.logoutSuccessUrl("/")) // 로그아웃 시 Redirect할 경로
             .exceptionHandling(exception -> exception.accessDeniedPage("/access-denied"));

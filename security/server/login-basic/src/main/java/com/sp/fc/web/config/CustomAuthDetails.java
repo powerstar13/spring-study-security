@@ -12,9 +12,9 @@ public class CustomAuthDetails implements AuthenticationDetailsSource<HttpServle
     @Override
     public RequestInfo buildDetails(HttpServletRequest request) {
         return RequestInfo.builder()
+            .loginTime(LocalDateTime.now())
             .remoteIp(request.getRemoteAddr())
             .sessionId(request.getSession().getId())
-            .loginTime(LocalDateTime.now())
             .build();
     }
 }
