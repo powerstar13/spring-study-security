@@ -11,3 +11,8 @@
    - 로그아웃 성공 시 보낼 페이지 지정
    - 접근 가능한 권한에 따라 제어
    - AuthenticationDetailsSource 정보 커스텀하기
+3. Authentication 메커니즘
+   - 인증(Authentication)
+   - 인증 제공자(AuthenticationProvider)
+   - 인증 관리자(AuthenticationManager)
+   - UsernamePasswordAuthenticationFilter 커스텀하기
