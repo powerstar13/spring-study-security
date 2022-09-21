@@ -27,7 +27,7 @@ public class StudentManager implements AuthenticationProvider, InitializingBean 
             if (studentDB.containsKey(token.getName())) {
                 return getAuthenticationToken(token.getName());
             }
-            return null;
+            return null; // 이 부분에서 핸들링할 수 없는 부분인 경우 반드시 return null 처리해야 다음 인증 처리 Filter에게 넘길 수 있다.
         }
         StudentAuthenticationToken token = (StudentAuthenticationToken) authentication;
         if (studentDB.containsKey(token.getCredentials())) {

@@ -29,9 +29,8 @@ public class MultiChainProxyTest {
     void test_1() {
         ResponseEntity<List<Student>> resp = testClient.exchange(
             "http://localhost:" + port + "/api/teacher/students",
-            
             HttpMethod.GET,
-            null, 
+            null,
             new ParameterizedTypeReference<List<Student>>() {}
         );
         
