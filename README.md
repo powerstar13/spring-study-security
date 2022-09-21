@@ -18,3 +18,5 @@
    - UsernamePasswordAuthenticationFilter 커스텀하기
 4. login-customer-filter 실습
 5. Basic 토큰인증
+6. basic 인증 기본 테스트
+   - WEB과 API를 분리하여 Security 작성
