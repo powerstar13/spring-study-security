@@ -27,3 +27,10 @@
 8. 로그인을 지원하기 위한 필터들
 9. RememberMe 토큰 저장
    - PersistenceTokenBasedRememberMeServices
+10. 세션 관리
+    - ConcurrentSessionFilter
+    - HttpSecurity > sessionManagement()
+11. 권한체크와 오류 처리
+    - AccessDeniedHandler 구현
+      - AccessDeniedException
+    - AuthenticationEntryPoint 구현
