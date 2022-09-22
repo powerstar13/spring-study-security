@@ -14,9 +14,13 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 import javax.servlet.http.HttpSessionEvent;
+import javax.sql.DataSource;
 import java.time.LocalDateTime;
 
 @EnableWebSecurity(debug = true)
@@ -24,9 +28,11 @@ import java.time.LocalDateTime;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     
     private final SpUserService spUserService;
+    private final DataSource dataSource;
     
-    public SecurityConfig(SpUserService spUserService) {
+    public SecurityConfig(SpUserService spUserService, DataSource dataSource) {
         this.spUserService = spUserService;
+        this.dataSource = dataSource;
     }
     
     @Override
@@ -72,6 +78,31 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         });
     }
     
+    @Bean
+    public PersistentTokenRepository tokenRepository() {
+        
+        JdbcTokenRepositoryImpl repository = new JdbcTokenRepositoryImpl();
+        repository.setDataSource(dataSource);
+        
+        try {
+            repository.removeUserTokens("1"); // 테이블이 없으면 에러가 날 것이다. (고의적으로 Exception을 발생시켜 catch문을 타도록 할 수 있다.)
+        } catch (Exception e) {
+            repository.setCreateTableOnStartup(true); // 문제가 있다면 테이블을 만들도록 하는 코드를 넣은 것이다.
+        }
+        
+        return repository;
+    }
+    
+    @Bean
+    public PersistentTokenBasedRememberMeServices rememberMeServices() {
+        PersistentTokenBasedRememberMeServices service = new PersistentTokenBasedRememberMeServices(
+            "hello", // key 값은 무엇으로 하든 상관 없다.
+            spUserService, // UserDetailsService의 구현체
+            this.tokenRepository()
+        );
+        return service;
+    }
+    
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -88,7 +119,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .failureUrl("/login-error") // 로그인 실패 시 Redirect 시킬 페이지 경로
             ) // 기본적으로 formLogin()을 사용하고 경로를 지정 안할 경우, User 로그인 페이지가 DefaultLoginPageGeneratingFilter, DefaultLogoutnPageGeneratingFilter에 의해 노출된다.
             .logout(logout -> logout.logoutSuccessUrl("/")) // 로그아웃 시 Redirect할 경로
-            .exceptionHandling(exception -> exception.accessDeniedPage("/access-denied"));
+            .exceptionHandling(exception -> exception.accessDeniedPage("/access-denied"))
+            .rememberMe(r -> r.rememberMeServices(this.rememberMeServices())); // RememberMe 서비스를 PersistentTokenBasedRememberMeServices로 동작시킬 수 있다.
     }
     
     @Override
