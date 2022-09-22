@@ -24,3 +24,4 @@
    - 데이터베이스를 사용하여 사용자를 관리할 수 있도록 처리
    - UserDetails를 구현한 Entity 및 UserDetailsService를 구현한 Service 생성
      - UserDetailsService와 UserDetails 구현체만 구현하면 스프링 시큐리티가 나머지는 쉽게 쓸 수 있도록 도움을 많이 준다.
+8. 로그인을 지원하기 위한 필터들
