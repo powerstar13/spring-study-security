@@ -34,3 +34,7 @@
     - AccessDeniedHandler 구현
       - AccessDeniedException
     - AuthenticationEntryPoint 구현
+12. AccessDecisionManager 권한 위원회에 참여하는 AccessDecisionVoter들의 vote 결과를 취합하여 판단
+    - AffirmativeBased: 긍정 위원회
+    - ConsensusBased: 다수결 위원회
+    - UnanimousBased: 만장일치 위원회
