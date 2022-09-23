@@ -38,3 +38,4 @@
     - AffirmativeBased: 긍정 위원회
     - ConsensusBased: 다수결 위원회
     - UnanimousBased: 만장일치 위원회
+13. SpEL
