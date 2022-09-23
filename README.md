@@ -39,3 +39,7 @@
     - ConsensusBased: 다수결 위원회
     - UnanimousBased: 만장일치 위원회
 13. SpEL
+14. ExpressionVoter 테스트
+    - SecurityExpressionRoot 
+    - MethodSecurityExpressionOperations 
+    - PermissionEvaluator 
