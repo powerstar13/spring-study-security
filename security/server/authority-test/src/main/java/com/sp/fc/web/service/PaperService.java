@@ -1,6 +1,7 @@
 package com.sp.fc.web.service;
 
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -21,7 +22,9 @@ public class PaperService implements InitializingBean {
         paperDB.put(paper.getPaperId(), paper);
     }
 
+    @PostFilter("notPrepareState(filterObject)")
     public List<Paper> getMyPapers(String username) {
+
         return paperDB.values().stream().filter(
             paper -> paper.getStudentIds().contains(username)
         ).collect(Collectors.toList());

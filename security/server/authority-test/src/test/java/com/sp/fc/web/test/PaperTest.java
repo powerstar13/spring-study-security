@@ -33,7 +33,15 @@ public class PaperTest extends WebIntegrationTest {
         .title("시험지2")
         .tutorId("tutor1")
         .studentIds(List.of("user2"))
-        .state(Paper.State.PREPARE)
+        .state(Paper.State.READY)
+        .build();
+
+    private Paper paper3 = Paper.builder()
+        .paperId(3L)
+        .title("시험지3")
+        .tutorId("tutor1")
+        .studentIds(List.of("user1"))
+        .state(Paper.State.READY)
         .build();
 
     @DisplayName("1. user1이 시험지 리스트 조회한다.")
@@ -41,6 +49,8 @@ public class PaperTest extends WebIntegrationTest {
     void test_1() {
 
         paperService.setPaper(paper1);
+        paperService.setPaper(paper2);
+        paperService.setPaper(paper3);
 
         client = new TestRestTemplate("user1", "1111");
 
@@ -52,6 +62,7 @@ public class PaperTest extends WebIntegrationTest {
         );
 
         assertEquals(200, response.getStatusCodeValue());
+        assertEquals(1, response.getBody().size());
         System.out.println(response.getBody());
     }
 
@@ -77,7 +88,7 @@ public class PaperTest extends WebIntegrationTest {
     @Test
     void test_3() {
 
-        paperService.setPaper(paper2);
+        paperService.setPaper(paper1);
 
         client = new TestRestTemplate("user2", "1111");
 
