@@ -46,3 +46,5 @@
 15. 메서드 후처리
     - 체크해야 할 대상이 단수일 경우 @PostAuthorize
     - 체크해야 할 대상이 복수일 경우 @PostFilter
+16. @Secured 기반 권한체크
+    - MethodSecurityMetadataSource

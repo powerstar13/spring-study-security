@@ -45,6 +45,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .password("1111")
                     .roles("USER", "TUTOR")
                     .build()
+            )
+            .withUser(
+                User.withDefaultPasswordEncoder()
+                    .username("primary")
+                    .password("1111")
+                    .roles("USER", "PRIMARY}")
+                    .build()
             );
     }
 
@@ -78,7 +85,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 authority
                     .mvcMatchers("/greeting/{name}").access("@nameCheck.check(#name)")
                     .anyRequest().authenticated()
-                    .accessDecisionManager(this.filterAccessDecisionManager())
+//                    .accessDecisionManager(this.filterAccessDecisionManager())
             );
     }
 }

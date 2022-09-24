@@ -8,6 +8,7 @@ import org.springframework.security.access.expression.method.DefaultMethodSecuri
 import org.springframework.security.access.expression.method.ExpressionBasedPreInvocationAdvice;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionOperations;
+import org.springframework.security.access.method.MethodSecurityMetadataSource;
 import org.springframework.security.access.prepost.PreInvocationAuthorizationAdviceVoter;
 import org.springframework.security.access.vote.*;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -17,11 +18,16 @@ import org.springframework.security.core.Authentication;
 import java.util.ArrayList;
 import java.util.List;
 
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 @RequiredArgsConstructor
 public class MethodSecurityConfiguration extends GlobalMethodSecurityConfiguration {
 
     private final CustomPermissionEvaluator customPermissionEvaluator;
+
+    @Override
+    protected MethodSecurityMetadataSource customMethodSecurityMetadataSource() {
+        return new CustomMetadataSource();
+    }
 
     @Override
     protected MethodSecurityExpressionHandler createExpressionHandler() {
@@ -54,7 +60,7 @@ public class MethodSecurityConfiguration extends GlobalMethodSecurityConfigurati
         decisionVoters.add(new PreInvocationAuthorizationAdviceVoter(expressionAdvice));
         decisionVoters.add(new RoleVoter());
         decisionVoters.add(new AuthenticatedVoter());
-//        decisionVoters.add(new CustomVoter()); // 커스텀 voter를 추가
+        decisionVoters.add(new CustomVoter()); // 커스텀 voter를 추가
 
         return new AffirmativeBased(decisionVoters); // AffirmativeBased: 긍정 위원회
 //        return new UnanimousBased(decisionVoters); // UnanimousBased: 만장일치 위원회

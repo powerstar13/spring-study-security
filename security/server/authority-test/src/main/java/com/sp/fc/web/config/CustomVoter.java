@@ -9,9 +9,11 @@ import java.util.Collection;
 
 public class CustomVoter implements AccessDecisionVoter<MethodInvocation> {
 
+    private final String PREFIX = "SCHOOL_";
+
     @Override
     public boolean supports(ConfigAttribute attribute) {
-        return true;
+        return attribute.getAttribute().startsWith(PREFIX);
     }
 
     @Override
@@ -21,6 +23,19 @@ public class CustomVoter implements AccessDecisionVoter<MethodInvocation> {
 
     @Override
     public int vote(Authentication authentication, MethodInvocation object, Collection<ConfigAttribute> attributes) {
-        return ACCESS_GRANTED;
+
+        String role = attributes.stream()
+            .filter(attr -> attr.getAttribute().startsWith(PREFIX))
+            .map(attr -> attr.getAttribute().substring(PREFIX.length()))
+            .findFirst().get();
+
+        if (authentication.getAuthorities().stream()
+            .filter(auth -> auth.getAuthority().equals("ROLE_" + role.toUpperCase()))
+            .findAny().isPresent()
+        ) {
+            return ACCESS_GRANTED;
+        }
+
+        return ACCESS_DENIED;
     }
 }
