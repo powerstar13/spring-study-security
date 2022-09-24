@@ -4,6 +4,7 @@ import com.sp.fc.web.config.CustomSecurityTag;
 import com.sp.fc.web.service.Paper;
 import com.sp.fc.web.service.PaperService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
@@ -25,6 +26,12 @@ public class PaperController {
     @GetMapping("/mypapers")
     public List<Paper> myPapers(@AuthenticationPrincipal User user) {
         return paperService.getMyPapers(user.getUsername());
+    }
+
+    @Secured({ "ROLE_USER", "RUN_AS_PRIMARY" })
+    @GetMapping("/allPapers")
+    public List<Paper> allPapers(@AuthenticationPrincipal User user) {
+        return paperService.getAllPapers();
     }
 
     @CustomSecurityTag("SCHOOL_PRIMARY")

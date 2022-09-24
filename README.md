@@ -48,3 +48,4 @@
     - 체크해야 할 대상이 복수일 경우 @PostFilter
 16. @Secured 기반 권한체크
     - MethodSecurityMetadataSource
+17. 임시 권한 부여 : RunAsManager

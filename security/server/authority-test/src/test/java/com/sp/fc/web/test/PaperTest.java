@@ -123,4 +123,26 @@ public class PaperTest extends WebIntegrationTest {
         assertEquals(3, response.getBody().size());
         System.out.println(response.getBody());
     }
+
+    @DisplayName("5. 사용자 user1이 임시로 교장선생님 권한을 얻어서 시험지를 가져온다.")
+    @Test
+    void test_5() {
+
+        paperService.setPaper(paper1);
+        paperService.setPaper(paper2);
+        paperService.setPaper(paper3);
+
+        client = new TestRestTemplate("user1", "1111");
+
+        ResponseEntity<List<Paper>> response = client.exchange(
+            super.uri("/paper/allPapers"),
+            HttpMethod.GET,
+            null,
+            new ParameterizedTypeReference<List<Paper>>() {}
+        );
+
+        assertEquals(200, response.getStatusCodeValue());
+        assertEquals(3, response.getBody().size());
+        System.out.println(response.getBody());
+    }
 }
