@@ -49,3 +49,7 @@
 16. @Secured 기반 권한체크
     - MethodSecurityMetadataSource
 17. 임시 권한 부여 : RunAsManager
+18. 도메인 객체 보안(ACL)
+    - ACL을 이용한 도메인 객체 권한 관리
+    - ACL 도메인 모델
+    - spring-cache 기술
