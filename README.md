@@ -56,3 +56,5 @@
 19. JWT 토큰
     - java-jwt: oauth2의 라이브러리를 사용하는 방법
     - jjwt: okta의 라이브러리를 사용하는 방법
+20. AuthToken을 이용한 로그인
+    - AccessToken
