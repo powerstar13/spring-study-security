@@ -21,9 +21,9 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
 
     @Override
     public void onAuthenticationFailure(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            AuthenticationException exception
+        HttpServletRequest request,
+        HttpServletResponse response,
+        AuthenticationException exception
     ) throws IOException, ServletException {
         handle(request, response);
         clearAuthenticationAttributes(request);
@@ -39,25 +39,27 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
 
 
     protected void handle(
-            HttpServletRequest request,
-            HttpServletResponse response
+        HttpServletRequest request,
+        HttpServletResponse response
     ) throws IOException {
         String targetUrl = determineTargetUrl(request);
         if (response.isCommitted()) {
-            logger.debug("Response has already been committed. Unable to redirect to "+ targetUrl);
+            logger.debug("Response has already been committed. Unable to redirect to " + targetUrl);
             return;
         }
         redirectStrategy.sendRedirect(request, response, targetUrl);
     }
 
     protected String determineTargetUrl(final HttpServletRequest request) {
-        if(request.getParameter("site").equals("manager")) {
+
+        if (request.getParameter("site").equals("manager")) {
             return "/login?site=manager&error=true";
-        }else if(request.getParameter("site").equals("study")){
+        } else if (request.getParameter("site").equals("study")) {
             return "/login?site=study&error=true";
-        }else if(request.getParameter("site").equals("teacher")){
+        } else if (request.getParameter("site").equals("teacher")) {
             return "/login?site=teacher&error=true";
         }
+
         return "/";
     }
 

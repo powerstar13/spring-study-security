@@ -25,10 +25,12 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     protected Log logger = LogFactory.getLog(this.getClass());
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request,
-                                        HttpServletResponse response,
-                                        Authentication authentication)
-            throws IOException {
+    public void onAuthenticationSuccess(
+        HttpServletRequest request,
+        HttpServletResponse response,
+        Authentication authentication
+    )
+        throws IOException {
 
         handle(request, response, requestCache.getRequest(request, response), authentication);
         clearAuthenticationAttributes(request);
@@ -36,10 +38,10 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     @Override
     public void onAuthenticationSuccess(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            FilterChain chain,
-            Authentication authentication
+        HttpServletRequest request,
+        HttpServletResponse response,
+        FilterChain chain,
+        Authentication authentication
     ) throws IOException, ServletException {
 //        System.out.println("success... 1");
     }
@@ -54,33 +56,39 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
 
     protected void handle(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            SavedRequest savedRequest,
-            Authentication authentication
+        HttpServletRequest request,
+        HttpServletResponse response,
+        SavedRequest savedRequest,
+        Authentication authentication
     ) throws IOException {
+
         String targetUrl = determineTargetUrl(request, savedRequest, authentication);
+
         if (response.isCommitted()) {
-            logger.debug("Response has already been committed. Unable to redirect to "+ targetUrl);
+            logger.debug("Response has already been committed. Unable to redirect to " + targetUrl);
             return;
         }
+
         redirectStrategy.sendRedirect(request, response, targetUrl);
     }
 
     protected String determineTargetUrl(final HttpServletRequest request, SavedRequest savedRequest, final Authentication authentication) {
-        if(savedRequest != null) {
+
+        if (savedRequest != null) {
             String redirectUrl = savedRequest.getRedirectUrl();
-            if(redirectUrl != null && !redirectUrl.startsWith("/login")) {
+            if (redirectUrl != null && !redirectUrl.startsWith("/login")) {
                 return savedRequest.getRedirectUrl();
             }
         }
-        if(request.getParameter("site").equals("manager")) {
+
+        if (request.getParameter("site").equals("manager")) {
             return "/manager";
-        }else if(request.getParameter("site").equals("study")){
+        } else if (request.getParameter("site").equals("study")) {
             return "/study";
-        }else if(request.getParameter("site").equals("teacher")){
+        } else if (request.getParameter("site").equals("teacher")) {
             return "/teacher";
         }
+
         return "/";
     }
 

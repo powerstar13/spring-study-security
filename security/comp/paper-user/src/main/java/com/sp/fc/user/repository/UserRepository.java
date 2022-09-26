@@ -13,31 +13,32 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    @Modifying(clearAutomatically  =  true)
-    @Query("UPDATE User SET name = ?2, updated = ?3 WHERE userId = ?1")
+
+    @Modifying(clearAutomatically = true)
+    @Query("update User set name=?2, updated=?3 where userId=?1")
     void updateUserName(Long userId, String userName, LocalDateTime update);
 
     Optional<User> findByEmail(String username);
 
-    @Query("SELECT a FROM User a, Authority b WHERE a.userId = b.userId AND b.authority = ?1")
+    @Query("select a from User a, Authority b where a.userId=b.userId and b.authority=?1")
     List<User> findAllByAuthoritiesIn(String authority);
 
-    @Query("SELECT a FROM User a, Authority b WHERE a.userId = b.userId AND b.authority = ?1")
+    @Query("select a from User a, Authority b where a.userId=b.userId and b.authority=?1")
     Page<User> findAllByAuthoritiesIn(String authority, Pageable pageable);
 
-    @Query("SELECT a FROM User a, Authority b WHERE a.school.schoolId = ?1 AND a.userId = b.userId AND b.authority = ?2")
+    @Query("select a from User a, Authority b where a.school.schoolId=?1 and a.userId=b.userId and b.authority=?2")
     List<User> findAllBySchool(Long schoolId, String authority);
 
-    @Query("SELECT a FROM User a, User b WHERE a.teacher.userId = b.userId AND b.userId = ?1")
+    @Query("select a from User a, User b where a.teacher.userId=b.userId and b.userId=?1")
     List<User> findAllByTeacherUserId(Long userId);
 
-    @Query("SELECT count(a) FROM User a, User b WHERE a.teacher.userId = b.userId AND b.userId = ?1")
+    @Query("select count(a) from User a, User b where a.teacher.userId=b.userId and b.userId=?1")
     Long countByAllTeacherUserId(Long userId);
 
-    @Query("SELECT count(a) FROM User a, Authority b WHERE a.userId = b.userId AND b.authority = ?1")
+    @Query("select count(a) from User a, Authority b where a.userId=b.userId and b.authority=?1")
     long countAllByAuthoritiesIn(String authority);
 
-    @Query("SELECT count(a) FROM User a, Authority b WHERE a.school.schoolId = ?1 AND a.userId = b.userId AND b.authority = ?2")
+    @Query("select count(a) from User a, Authority b where a.school.schoolId=?1 and a.userId=b.userId and b.authority=?2")
     long countAllByAuthoritiesIn(long schoolId, String authority);
 
 }

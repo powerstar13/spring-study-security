@@ -15,7 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "sp_user")
+@Table(name="sp_user")
 public class User implements UserDetails {
 
     @Id

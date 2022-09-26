@@ -25,20 +25,20 @@ public class OnlinePaperSecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserSecurityService userSecurityService;
 
     @Bean
-    PasswordEncoder passwordEncoder(){
+    PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userSecurityService)
-                .passwordEncoder(passwordEncoder());
+            .passwordEncoder(passwordEncoder());
     }
 
-    private RememberMeServices rememberMeServices(){
+    private RememberMeServices rememberMeServices() {
         TokenBasedRememberMeServices rememberMeServices = new TokenBasedRememberMeServices(
-                "paper-site-remember-me",
-                userSecurityService
+            "paper-site-remember-me",
+            userSecurityService
         );
         rememberMeServices.setParameter("remember-me");
         rememberMeServices.setAlwaysRemember(true);
@@ -46,42 +46,43 @@ public class OnlinePaperSecurityConfig extends WebSecurityConfigurerAdapter {
         return rememberMeServices;
     }
 
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         final SpLoginFilter filter = new SpLoginFilter(
-                authenticationManagerBean(),
-                rememberMeServices()
+            authenticationManagerBean(),
+            rememberMeServices()
         );
+
         http
-                .csrf().disable()
-                .formLogin(login->{
-                    login.loginPage("/login")
-                    ;
-                })
-                .logout(logout->{
-                    logout.logoutSuccessUrl("/")
-                    ;
-                })
-                .rememberMe(config->{
-                            config.rememberMeServices(rememberMeServices())
-                            ;
-                })
-                .addFilterAt(filter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling(exception->{
-                    exception.accessDeniedPage("/access-denied");
-                })
-                .authorizeRequests(config->{
-                    config
-                            .antMatchers("/").permitAll()
-                            .antMatchers("/login").permitAll()
-                            .antMatchers("/error").permitAll()
-                            .antMatchers("/signup/*").permitAll()
-                            .antMatchers("/study/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_STUDENT")
-                            .antMatchers("/teacher/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_TEACHER")
-                            .antMatchers("/manager/**").hasAuthority("ROLE_ADMIN")
-                    ;
-                })
+            .csrf().disable()
+            .formLogin(login -> {
+                login.loginPage("/login")
+                ;
+            })
+            .logout(logout -> {
+                logout.logoutSuccessUrl("/")
+                ;
+            })
+            .rememberMe(config -> {
+                config.rememberMeServices(rememberMeServices())
+                ;
+            })
+            .addFilterAt(filter, UsernamePasswordAuthenticationFilter.class)
+            .exceptionHandling(exception -> {
+                exception.accessDeniedPage("/access-denied");
+            })
+            .authorizeRequests(config -> {
+                config
+                    .antMatchers("/").permitAll()
+                    .antMatchers("/login").permitAll()
+                    .antMatchers("/error").permitAll()
+                    .antMatchers("/signup/*").permitAll()
+                    .antMatchers("/study/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_STUDENT")
+                    .antMatchers("/teacher/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_TEACHER")
+                    .antMatchers("/manager/**").hasAuthority("ROLE_ADMIN")
+                ;
+            })
         ;
     }
 
@@ -89,7 +90,7 @@ public class OnlinePaperSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
-                .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+            .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 
 
