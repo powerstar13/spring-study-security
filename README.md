@@ -53,3 +53,6 @@
     - ACL을 이용한 도메인 객체 권한 관리
     - ACL 도메인 모델
     - spring-cache 기술
+19. JWT 토큰
+    - java-jwt: oauth2의 라이브러리를 사용하는 방법
+    - jjwt: okta의 라이브러리를 사용하는 방법
