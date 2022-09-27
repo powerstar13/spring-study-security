@@ -59,3 +59,6 @@
 20. AuthToken을 이용한 로그인
     - AccessToken
 21. RefreshToken을 이용한 로그인
+22. OAuth2 로그인
+    - spring-boot-starter-oauth2-client 라이브러리
+    - google 로그인
