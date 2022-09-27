@@ -28,7 +28,7 @@ public class AdvancedSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        JWTLoginFilter loginFilter = new JWTLoginFilter(authenticationManager()); // 로그인을 처리해주는 필터
+        JWTLoginFilter loginFilter = new JWTLoginFilter(authenticationManager(), userService); // 로그인을 처리해주는 필터
         JWTCheckFilter checkFilter = new JWTCheckFilter(authenticationManager(), userService); // 로그인된 토큰을 매번 검증해줄 필터
 
         http
