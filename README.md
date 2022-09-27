@@ -61,4 +61,5 @@
 21. RefreshToken을 이용한 로그인
 22. OAuth2 로그인
     - spring-boot-starter-oauth2-client 라이브러리
-    - google 로그인
+23. SNS 로그인 관리
+    - Google과 Naver를 이용한 SSO 로그인
